@@ -1,4 +1,18 @@
+# Python
 __pycache__/
 *.pyc
-.venv/
-.env
+*.pyo
+*.pyd
+
+# Virtual Env
+my-python-app-venv/
+
+# Pytest
+.cache/
+.junit.xml
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store
