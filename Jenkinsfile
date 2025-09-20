@@ -1,22 +1,19 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'python:3.11'
+        }
+    }
 
     environment {
         VENV_DIR = 'my-python-app-venv'
     }
 
     stages {
-        stage('Clone') {
-            steps {
-                // Jenkins auto-clones when using "Pipeline from SCM", but keep this if doing scripted SCM
-                checkout scm
-            }
-        }
-
-        stage('Set up Python Env') {
+        stage('Install Dependencies') {
             steps {
                 sh '''
-                python3 -m venv $VENV_DIR
+                python -m venv $VENV_DIR
                 source $VENV_DIR/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
@@ -24,7 +21,7 @@ pipeline {
             }
         }
 
-        stage('Run Unit Tests') {
+        stage('Run Tests') {
             steps {
                 sh '''
                 source $VENV_DIR/bin/activate
@@ -36,10 +33,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build and tests completed successfully."
+            echo "✅ Build successful"
         }
         failure {
-            echo "❌ Build or tests failed."
+            echo "❌ Build failed"
         }
     }
 }
