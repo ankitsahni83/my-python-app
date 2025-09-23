@@ -24,6 +24,9 @@ pipeline {
         stage('Create Virtual Env') {
             steps {
                 sh '''
+                echo "🧹 Cleaning up any existing venv..."
+                rm -rf ${VENV_DIR}
+                echo "🐍 Creating new virtual environment..."
                 ${PYTHON_BIN} -m venv ${VENV_DIR}
                 echo "✅ Virtualenv created. Listing contents:"
                 ls -l ${VENV_DIR}/bin
