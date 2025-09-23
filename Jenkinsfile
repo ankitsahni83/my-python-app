@@ -47,7 +47,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 sh '''
-                source ${VENV_DIR}/bin/activate
+                . ${VENV_DIR}/bin/activate
                 python -m unittest discover tests/
                 '''
             }
