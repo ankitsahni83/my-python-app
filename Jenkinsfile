@@ -37,7 +37,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                source ${VENV_DIR}/bin/activate
+                . ${VENV_DIR}/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt || echo "⚠️ requirements.txt not found or failed"
                 '''
