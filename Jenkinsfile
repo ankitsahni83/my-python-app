@@ -6,6 +6,8 @@ pipeline {
     }
 
     environment {
+        PYTHON_BIN = '/usr/bin/python3'
+        PIP_BIN = '/usr/bin/pip3'
         VENV_DIR = 'my-python-app-venv'
     }
 
