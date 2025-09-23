@@ -11,7 +11,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                python -m venv $VENV_DIR
+                $PYTHON_BIN -m venv $VENV_DIR
                 source $VENV_DIR/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 sh '''
                 source $VENV_DIR/bin/activate
-                python -m unittest discover tests/
+                $PYTHON_BIN -m unittest discover tests/
                 '''
             }
         }
