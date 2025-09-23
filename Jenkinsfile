@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sh '''
                 python3 -m venv $VENV_DIR
-                source $VENV_DIR/bin/activate
+                . $VENV_DIR/bin/activate
                 pip install --upgrade pip
                 pip install -r requirements.txt
                 '''
@@ -20,7 +20,7 @@ pipeline {
         stage('Run Unit Tests with Coverage') {
             steps {
                 sh '''
-                source $VENV_DIR/bin/activate
+                . $VENV_DIR/bin/activate
                 coverage run -m unittest discover tests/
                 coverage report
                 coverage html
