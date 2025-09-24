@@ -13,6 +13,7 @@ pipeline {
                 python3 -m venv $VENV_DIR
                 . $VENV_DIR/bin/activate
                 pip install --upgrade pip
+                pip install setuptools wheel build coverage
                 pip install -r requirements.txt
                 '''
             }
@@ -30,6 +31,21 @@ pipeline {
             }
         }
 
+        stage('Build Python Package') {
+            steps {
+                sh '''
+                . $VENV_DIR/bin/activate
+                python -m build
+                '''
+            }
+        }
+
+        stage('Archive Build Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'dist/*.whl, dist/*.tar.gz', fingerprint: true
+            }
+        }
+
         stage('Publish Coverage Report') {
             steps {
                 publishHTML(target: [
@@ -43,10 +59,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build and tests with coverage completed successfully."
+            echo "✅ Build, tests, and packaging completed successfully."
         }
         failure {
-            echo "❌ Build or tests with coverage failed."
+            echo "❌ Build or tests or packaging failed."
         }
     }
 }

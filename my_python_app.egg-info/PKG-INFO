@@ -1,0 +1,24 @@
+Metadata-Version: 2.4
+Name: my-python-app
+Version: 0.1.0
+Summary: A sample Python web app
+Author: Ankit Sahni
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: Flask==2.3.3
+Requires-Dist: pytest==7.4.2
+Requires-Dist: coverage
+Dynamic: author
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# my-python-app
+
+A modular, production-ready Python Flask web application using enterprise design patterns.
