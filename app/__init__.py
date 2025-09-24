@@ -3,7 +3,7 @@ from app.routes.hello import hello_bp
 from app.errors import register_error_handlers
 from app.config import Config
 
-## Create Flask application!!
+## Create Flask application!!!
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
