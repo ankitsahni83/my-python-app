@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR = 'my-python-app-venv'
+        VERSION = "0.1.${BUILD_NUMBER}"
     }
 
     stages {
@@ -10,8 +11,8 @@ pipeline {
             steps {
                 sh '''
                 rm -rf ${VENV_DIR}
-                python3 -m venv $VENV_DIR
-                . $VENV_DIR/bin/activate
+                python3 -m venv ${VENV_DIR}
+                . ${VENV_DIR}/bin/activate
                 pip install --upgrade pip
                 pip install setuptools wheel build coverage
                 pip install -r requirements.txt
@@ -22,7 +23,7 @@ pipeline {
         stage('Run Unit Tests with Coverage') {
             steps {
                 sh '''
-                . $VENV_DIR/bin/activate
+                . ${VENV_DIR}/bin/activate
                 coverage run -m unittest discover tests/
                 coverage report
                 coverage html
@@ -34,8 +35,25 @@ pipeline {
         stage('Build Python Package') {
             steps {
                 sh '''
-                . $VENV_DIR/bin/activate
+                . ${VENV_DIR}/bin/activate
                 python -m build
+                '''
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh '''
+                docker build -t my-python-app:${VERSION} --build-arg APP_VERSION=${VERSION} .
+                '''
+            }
+        }
+
+        stage('Deploy via Docker Compose') {
+            steps {
+                sh '''
+                docker-compose down || true
+                APP_VERSION=${VERSION} docker-compose up -d --force-recreate
                 '''
             }
         }
@@ -55,14 +73,21 @@ pipeline {
                 ])
             }
         }
+
+        stage('Test Docker Access') {
+            steps {
+                sh 'docker version'
+            }
+        }
+     
     }
 
     post {
         success {
-            echo "✅ Build, tests, and packaging completed successfully."
+            echo "✅ Build, test, package, and deployment completed successfully."
         }
         failure {
-            echo "❌ Build or tests or packaging failed."
+            echo "❌ Something failed during the CI/CD pipeline."
         }
     }
 }
